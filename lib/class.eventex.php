@@ -490,7 +490,9 @@ Class GenericSectionUpdate extends Event
 		
 		// Spoof post and file fields
 		$_POST['fields'] = $aEntry;
-		$_FILES['fields'] = $aFiles;	
+		$_FILES['fields'] = $aFiles;
+		
+		if (is_null($_FILES['fields']))	unset($_FILES['fields']);
 		
 		// Ensure the system:id is removed from fields[]
 		unset($_POST['fields']['system:id']);
