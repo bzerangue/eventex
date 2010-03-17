@@ -319,7 +319,7 @@ Class GenericSectionUpdate extends Event
 	
 	public function updateSections( $iSectionID, $szPostKey, $field_array )
 	{	
-		if (!isset($_POST[$szPostKey])) return false;
+		if (!isset($_POST[$szPostKey])) return array();
 		
 		$results = array();
 		
