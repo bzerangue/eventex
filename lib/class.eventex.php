@@ -104,16 +104,8 @@ abstract class EventEx extends Event
 	// Wrapper for GenericSectionUpdater::updateNamedSections
 	protected function updateNamedSections( $aSections )
 	{
-		$this->setupDatabaseManipulator();
 		return GenericSectionUpdater::updateNamedSections($this->ROOT_ELEMENT, $this->_Parent, $aSections);
 	}
-	
-	// initilaize the DB manipulator object
-	protected function setupDatabaseManipulator()
-	{
-		require_once(EXTENSIONS . '/databasemanipulator/lib/class.databasemanipulator.php');
-		DatabaseManipulator::associateParent($this->_Parent);
-	}		
 	
 	// Lazy access to Env keys
 	protected function getEnvKey($container, $value)
@@ -590,8 +582,10 @@ Class GenericSectionUpdate extends Event
 	{
 		// Don't delete if there are no errors
 		if (!$this->rollback) return;		
-			
-		DatabaseManipulator::deleteEntries($this->created_entries);
+		
+		include_once(TOOLKIT . '/class.entrymanager.php');
+		$entryManager = new EntryManager($this->_Parent);
+		$entryManager->delete($this->created_entries);
 	} 
 	
 	public function resolveLinks()
