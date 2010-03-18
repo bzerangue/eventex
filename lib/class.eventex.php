@@ -550,7 +550,7 @@ Class GenericSectionUpdate extends Event
 		if ($recreate_post_values) {
 			if(is_array($fields) && !empty($fields))
 			{
-				$post_values = new XMLElement('post-values-BLAH');
+				$post_values = new XMLElement('post-values');
 
 				foreach($fields as $element_name => $value)
 				{
