@@ -541,20 +541,27 @@ Class GenericSectionUpdate extends Event
 		
 		// The update has succeeded.  Add in the post values
 		// In the lurid Symphony tradition, $fields is defined elsewhere
+		$children = $result->getChildren();
+		$recreate_post_values = true;
+		foreach($children as $child) {
+			if ($child->getName() == 'post-values') $recreate_post_values = false;
+		}
 		
-		if(is_array($fields) && !empty($fields))
-		{
-			$post_values = new XMLElement('post-values');
-			
-			foreach($fields as $element_name => $value)
+		if ($recreate_post_values) {
+			if(is_array($fields) && !empty($fields))
 			{
-				if(strlen($value) == 0) continue;
-				
-				$post_values->appendChild(new XMLElement($element_name, General::sanitize($value)));
+				$post_values = new XMLElement('post-values-BLAH');
+
+				foreach($fields as $element_name => $value)
+				{
+					if(strlen($value) == 0) continue;
+
+					$post_values->appendChild(new XMLElement($element_name, General::sanitize($value)));
+				}
+
+				$result->appendChild($post_values);
 			}
-			
-			$result->appendChild($post_values);
-		}				
+		}						
 		
 		// maintain the updates list
 		$this->updated_entries[$szPostKey][] = $result->getAttribute("id");
