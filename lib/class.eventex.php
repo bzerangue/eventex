@@ -24,7 +24,7 @@ abstract class EventEx extends Event
 	const XML_TYPE_TEXT				= 2;
 	
 	// String matching
-	const REGEX_PLACEHOLDER			= '/([a-z-]+)\[(([^\[:]+)(?::([^\[]*))*)\]/';
+	const REGEX_PLACEHOLDER			= '/([a-z0-9-]+)\[(([^\[:]+)(?::([^\[]*))*)\]/';
 
 	/*
 	** Members 
@@ -194,7 +194,7 @@ class GenericSectionUpdater
 		
 		$oSectionUpdater->storeRedirect();
 		
-		$sm = new SectionManager($oParent);	
+		// $sm = new SectionManager($oParent);	
 		
 		$redirect = true;
 	
@@ -203,12 +203,11 @@ class GenericSectionUpdater
 			/*
 			** Build an array of field meta-data
 			*/
-			
 			$field_array = array();
 			
-			$fields = end($sm->fetch($sm->fetchIDFromHandle($entry)));
+			$fields = SectionManager::fetch(SectionManager::fetchIDFromHandle($entry));
 			
-			foreach ($fields->fetch() as $field)
+			foreach ($fields->fetchFields() as $field)
 			{
 				$tmp = $field->get();				
 				$field_array[strtolower($tmp['label'])] = $tmp;
@@ -218,7 +217,7 @@ class GenericSectionUpdater
 			** Run the update and return the Symphony XML
 			*/
 			
-			$section_arrays = $oSectionUpdater->updateSections($sm->fetchIDFromHandle($entry), $entry, $field_array);
+			$section_arrays = $oSectionUpdater->updateSections(SectionManager::fetchIDFromHandle($entry), $entry, $field_array);
 			
 			foreach($section_arrays as $section)
 			{				
@@ -530,7 +529,7 @@ Class GenericSectionUpdate extends Event
 		$result->setAttribute( EventEx::ATTRIBUTE_SECTION_ID , $iSectionID);
 		$result->setAttribute( EventEx::ATTRIBUTE_SECTION_HANDLE, $szPostKey);
 		
-		if ($index_key)
+		if ($index_key or $index_key==0)
 			$result->setAttribute(EventEx::ATTRIBUTE_INDEX_KEY, $index_key);
 		
 		if ($result->getAttribute("result", $szPostKey) == "error")
@@ -591,8 +590,8 @@ Class GenericSectionUpdate extends Event
 		if (!$this->rollback) return;		
 		
 		include_once(TOOLKIT . '/class.entrymanager.php');
-		$entryManager = new EntryManager($this->_Parent);
-		$entryManager->delete($this->created_entries);
+		// $entryManager = new EntryManager($this->_Parent);
+		EntryManager::delete($this->created_entries);
 	} 
 	
 	public function resolveLinks()
