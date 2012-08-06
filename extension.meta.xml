@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<extension id="symql" status="released" xmlns="http://symphony-cms.com/schemas/extension/1.0">
+	<name>EventEx</name>
+	<description>Multiple section form submission</description>
+	<repo type="github">http://github.com/yourheropaul/eventex</repo>
+	<url type="discuss">http://getsymphony.com/discuss/thread/22126/</url>
+	<types>
+		<type>Events</type>
+	</types>
+	<authors>
+		<author>
+			<name github="yourheropaul" symphony="Yourheropaul">Your Hero Paul</name>
+			<website>http://behindthelittledoor.co.uk</website>
+		</author>
+	</authors>
+	<releases>
+		<release version="1.1" date="2012-08-06" min="2.3.x"/>
+		<release version="1.0.1" date="2009-01-21" min="2.0" max="2.0.7"/>
+		<release version="1.0" date="2009-01-21" min="2.0" max="2.0.7"/>
+	</releases>
+</extension>
